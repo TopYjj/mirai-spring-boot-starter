@@ -4,12 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.graydove</groupId>
-        <artifactId>pcrbot</artifactId>
+        <artifactId>roboot</artifactId>
         <version>1.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>demo</artifactId>
-    <version>${pcrbot-version}</version>
+    <version>1.0.0</version>
     <name>demo</name>
     <description>Demo</description>
 
@@ -31,7 +30,6 @@
         <dependency>
             <groupId>cn.graydove</groupId>
             <artifactId>mirai-spring-boot-starter</artifactId>
-            <version>${pcrbot-version}</version>
         </dependency>
 
         <dependency>

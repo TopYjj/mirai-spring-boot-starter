@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>mirai-spring-boot-starter</module>
+        <module>demo</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -11,18 +17,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-
     <properties>
         <java.version>11</java.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
-        <pcrbot-version>1.0.0</pcrbot-version>
         <mirai-version>1.2.2</mirai-version>
         <kotlin.version>1.4.0</kotlin.version>
     </properties>
 
     <groupId>cn.graydove</groupId>
-    <artifactId>pcrbot</artifactId>
-    <version>${pcrbot-version}</version>
+    <artifactId>roboot</artifactId>
+    <version>1.0.0</version>
 
     <dependencyManagement>
         <dependencies>
@@ -35,6 +39,11 @@
                 <groupId>net.mamoe</groupId>
                 <artifactId>mirai-core-qqandroid</artifactId>
                 <version>${mirai-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.graydove</groupId>
+                <artifactId>mirai-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
