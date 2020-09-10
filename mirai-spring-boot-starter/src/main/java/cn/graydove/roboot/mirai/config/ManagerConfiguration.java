@@ -8,7 +8,7 @@ import cn.graydove.roboot.mirai.core.processor.EventProcessorManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,9 @@ import java.lang.reflect.Method;
 
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = "bot", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnBean(MiraiConfiguration.class)
 public class ManagerConfiguration implements BeanPostProcessor, ApplicationContextAware {
+    private ApplicationContext applicationContext;
 
     private EventProcessorManager eventProcessorManager;
 
@@ -33,7 +34,7 @@ public class ManagerConfiguration implements BeanPostProcessor, ApplicationConte
         for (Method method: methods) {
             MessageListener messageListener = AnnotatedElementUtils.findMergedAnnotation(method, MessageListener.class);
             if (messageListener != null) {
-                functionManager.register(new Function(method, bean, messageListener.value(), messageListener.MessageTypes()));
+                functionManager.register(new Function(applicationContext, method, bean, messageListener.value(), messageListener.MessageTypes()));
                 log.info("register function success");
             }
         }
@@ -46,7 +47,8 @@ public class ManagerConfiguration implements BeanPostProcessor, ApplicationConte
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        eventProcessorManager = applicationContext.getBean(EventProcessorManager.class);
-        functionManager = applicationContext.getBean(FunctionManager.class);
+        this.applicationContext = applicationContext;
+        this.eventProcessorManager = applicationContext.getBean(EventProcessorManager.class);
+        this.functionManager = applicationContext.getBean(FunctionManager.class);
     }
 }

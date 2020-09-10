@@ -14,7 +14,7 @@ public class FunListener {
     /**
      * 消息事件可使用注解方式监听，消息事件监听的注解有{GroupMessageListener, FriendMessageListener, TempleMessageListener, MessageListener}
      * 以下四个类型会自动注入
-     * MessageChain, MessageEvent, friend(若为好友消息或临时消息), Group(若为群消息)
+     * MessageChain, MessageEvent, Contact, User, Bot, 以及其他springApplication管理的Bean
      */
     @GroupMessageListener("^reply.*")
     public void replay(MessageChain messageChain, Group group, GroupMessageEvent event) {
