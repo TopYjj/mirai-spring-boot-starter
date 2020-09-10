@@ -9,6 +9,6 @@ bot:
 #  qq: 12345678          #机器人QQ号
 #  password: 12345678   #机器人QQ密码
   log:
-    print-mirai-bot-log: false    #简单的日志配置，如要复杂自定义请使用自定义Bot实例
-    print-mirai-network-log: false
+    print-mirai-bot-log: true    #简单的日志配置，如要复杂自定义请使用自定义Bot实例
+    print-mirai-network-log: true
   enable: true

@@ -11,9 +11,8 @@ import cn.graydove.robot.mirai.properties.LogProperties;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
 import net.mamoe.mirai.utils.BotConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,8 +20,7 @@ import java.net.URL;
 import java.util.Optional;
 
 @Configuration
-@EnableConfigurationProperties(BotProperties.class)
-@ConditionalOnProperty(prefix = "bot", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnBean(ManagerConfiguration.class)
 public class MiraiConfiguration {
 
     private BotProperties properties;

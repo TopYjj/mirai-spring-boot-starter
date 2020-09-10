@@ -5,10 +5,12 @@ import cn.graydove.robot.mirai.core.function.Function;
 import cn.graydove.robot.mirai.core.function.FunctionManager;
 import cn.graydove.robot.mirai.core.processor.EventProcessor;
 import cn.graydove.robot.mirai.core.processor.EventProcessorManager;
+import cn.graydove.robot.mirai.properties.BotProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +20,8 @@ import java.lang.reflect.Method;
 
 @Slf4j
 @Configuration
-@ConditionalOnBean(MiraiConfiguration.class)
+@EnableConfigurationProperties(BotProperties.class)
+@ConditionalOnProperty(prefix = "bot", name = "enable", havingValue = "true", matchIfMissing = true)
 public class ManagerConfiguration implements BeanPostProcessor, ApplicationContextAware {
     private ApplicationContext applicationContext;
 

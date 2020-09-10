@@ -8,7 +8,7 @@
         <artifactId>roboot</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>mirai-starter</artifactId>
+    <artifactId>mirai-spring-boot-starter</artifactId>
     <version>${parent.version}</version>
     <name>mirai-spring-boot-starter</name>
     <description>mirai</description>

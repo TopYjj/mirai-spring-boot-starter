@@ -3,9 +3,14 @@ package cn.graydove.robot.mirai.core.function;
 import cn.graydove.robot.mirai.enums.MessageType;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.contact.User;
+import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.contact.Member;
+import net.mamoe.mirai.contact.MemberPermission;
+import net.mamoe.mirai.message.FriendMessageEvent;
+import net.mamoe.mirai.message.GroupMessageEvent;
 import net.mamoe.mirai.message.MessageEvent;
+import net.mamoe.mirai.message.TempMessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 import org.springframework.context.ApplicationContext;
 
@@ -62,29 +67,94 @@ public class Function {
     }
 
     void invoke(MessageEvent event) {
+        Object[] params = getParam(event);
+
+        try {
+            method.invoke(object, params);
+        } catch (RuntimeException | IllegalAccessException | InvocationTargetException e) {
+            log.error("方法：" + method.getName() + " 调用失败", e);
+        }
+    }
+
+    private Object[] getParam(MessageEvent e) {
         Type[] types = method.getGenericParameterTypes();
         int size = types.length;
         Object[] params = new Object[size];
-        for (int i=0;i<size;++i) {
+
+        if (e instanceof GroupMessageEvent) {
+            getGroupMessageEventParam((GroupMessageEvent) e, params, types);
+        } else if (e instanceof TempMessageEvent) {
+            getTempMessageEventParam((TempMessageEvent) e, params, types);
+        } else if (e instanceof FriendMessageEvent) {
+            getFriendMessageEventParam((FriendMessageEvent) e, params, types);
+        }
+        return params;
+    }
+
+    private void getGroupMessageEventParam(GroupMessageEvent e, Object[] params, Type[] types) {
+        for (int i=0;i<params.length;++i) {
             Class<?> clazz = (Class<?>) types[i];
-            if (MessageEvent.class.isAssignableFrom(clazz)) {
-                params[i] = event;
+            if (clazz.isAssignableFrom(GroupMessageEvent.class)) {
+                params[i] = e;
             } else if (Bot.class.isAssignableFrom(clazz)) {
-                params[i] = event.getBot();
-            } else if (Contact.class.isAssignableFrom(clazz)) {
-                params[i] = event.getSubject();
+                params[i] = e.getBot();
+            } else if (Group.class.isAssignableFrom(clazz)) {
+                params[i] = e.getGroup();
             } else if (MessageChain.class.isAssignableFrom(clazz)) {
-                params[i] = event.getMessage();
-            } else if (User.class.isAssignableFrom(clazz)) {
-                params[i] = event.getSender();
+                params[i] = e.getMessage();
+            } else if (Member.class.isAssignableFrom(clazz)) {
+                params[i] = e.getSender();
+            } else if (MemberPermission.class.isAssignableFrom(clazz)) {
+                params[i] = e.getPermission();
             } else {
-                params[i] = applicationContext.getBean(clazz);
+                Object o = null;
+                try {
+                    o = applicationContext.getBean(clazz);
+                } catch (Exception ignored) { }
+                params[i] = o;
             }
         }
-        try {
-            method.invoke(object, params);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error(method.getName() + "调用失败", e);
+    }
+    private void getTempMessageEventParam(TempMessageEvent e, Object[] params, Type[] types) {
+        for (int i=0;i<params.length;++i) {
+            Class<?> clazz = (Class<?>) types[i];
+            if (clazz.isAssignableFrom(TempMessageEvent.class)) {
+                params[i] = e;
+            } else if (Bot.class.isAssignableFrom(clazz)) {
+                params[i] = e.getBot();
+            } else if (Group.class.isAssignableFrom(clazz)) {
+                params[i] = e.getGroup();
+            } else if (MessageChain.class.isAssignableFrom(clazz)) {
+                params[i] = e.getMessage();
+            } else if (Member.class.isAssignableFrom(clazz)) {
+                params[i] = e.getSender();
+            } else {
+                Object o = null;
+                try {
+                    o = applicationContext.getBean(clazz);
+                } catch (Exception ignored) { }
+                params[i] = o;
+            }
+        }
+    }
+    private void getFriendMessageEventParam(FriendMessageEvent e, Object[] params, Type[] types) {
+        for (int i=0;i<params.length;++i) {
+            Class<?> clazz = (Class<?>) types[i];
+            if (clazz.isAssignableFrom(FriendMessageEvent.class)) {
+                params[i] = e;
+            } else if (Bot.class.isAssignableFrom(clazz)) {
+                params[i] = e.getBot();
+            } else if (MessageChain.class.isAssignableFrom(clazz)) {
+                params[i] = e.getMessage();
+            } else if (Friend.class.isAssignableFrom(clazz)) {
+                params[i] = e.getSender();
+            } else {
+                Object o = null;
+                try {
+                    o = applicationContext.getBean(clazz);
+                } catch (Exception ignored) { }
+                params[i] = o;
+            }
         }
     }
 }

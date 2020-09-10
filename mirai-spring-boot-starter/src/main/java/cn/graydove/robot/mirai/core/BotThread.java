@@ -86,7 +86,7 @@ public class BotThread extends Thread {
             }
         });
 
-        log.info("bot start finished");
+        log.info("bot start completed");
         bot.join();
     }
 
