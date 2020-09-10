@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mirai-spring-boot-starter</module>
+        <module>mirai-starter</module>
         <module>demo</module>
     </modules>
 
@@ -42,7 +42,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.graydove</groupId>
-                <artifactId>mirai-spring-boot-starter</artifactId>
+                <artifactId>mirai-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
