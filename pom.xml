@@ -25,11 +25,21 @@
     </properties>
 
     <groupId>cn.graydove</groupId>
-    <artifactId>roboot</artifactId>
+    <artifactId>mirai-spring-boot-starter-parent</artifactId>
     <version>1.0.0</version>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>net.mamoe</groupId>
+                <artifactId>mirai-core</artifactId>
+                <version>${mirai-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.mamoe</groupId>
+                <artifactId>mirai-core-qqandroid</artifactId>
+                <version>${mirai-version}</version>
+            </dependency>
             <dependency>
                 <groupId>cn.graydove</groupId>
                 <artifactId>mirai-spring-boot-starter</artifactId>
